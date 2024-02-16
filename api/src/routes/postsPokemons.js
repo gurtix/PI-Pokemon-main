@@ -1,9 +1,8 @@
 const {Router} = require('express');
+const {createPostHandler}= require("../handlers/postHandler");
 
 const router = Router ();
 
-router.post("/pokemons",(req,res)=>{
-    res.status(200).send("Crear pokemon");
-});
+router.post("/",createPostHandler);
 
 module.exports = postsPokemons;

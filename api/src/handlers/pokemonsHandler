@@ -1,0 +1,34 @@
+const { createPokemonDB } = require("../controllers/pokemonsControllers");
+
+const getPokemonsHandler = (req,res) =>{
+    const {name,race}=req.query;
+    if(name)res.status(200).send(`Pokemon ${name}`);
+    res.status(200).send(`Pokemons`);
+};
+
+const getDetailPokemon = (req, res)=> {
+    const {idPokemon}= req.params
+    res.status(200).send(`Detalle del pokemon ${idPokemon}`);
+};
+
+const getTypes = (req,res)=>{
+    res.status(200).send("tipos de pokemons");
+};
+
+const createPokemonHandler = async(req, res)=>{  
+    const {name, sprites, stats, height, weight} = req.body;
+    try{
+        const response= await createPokemonDB(name, sprites, stats, height, weight);
+        res.status(200).send(response);
+    }catch (error){
+        res.status(400).send({error:error.message});
+    }
+
+};
+
+module.exports = {
+    getPokemonsHandler,
+    getDetailPokemon,
+    getTypes,
+    createPokemonHandler
+};

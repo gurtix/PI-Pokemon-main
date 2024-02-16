@@ -1,22 +1,14 @@
 const {Router} = require('express');
 const { Pokemon } = require('../db.js');
 const axios = require('axios');
+const {getDetailPokemon, getPokemonsHandler, getTypes,createPokemonHandler} = require("../handlers/pokemonsHandler");
 
 const router= Router();
 
-router.get("/",(req,res)=>{
-    res.status(200).send("pokemones");
-});
-
-router.get("/:idPokemon",(req,res)=>{
-    res.status(200).send("Detalles del pokemon");
-});
-
-
-router.get("/types",(req,res)=>{
-    res.status(200).send("tipos de pokemons");
-});
-
+router.get("/",getPokemonsHandler);
+router.get("/:idPokemon",getDetailPokemon);
+router.get("/types",getTypes);
+router.post("/",createPokemonHandler);
 
 
 // router.get('/', async (req, res) => {
