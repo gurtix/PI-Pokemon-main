@@ -21,15 +21,25 @@ module.exports = (sequelize) => {
     weight: {
       type: DataTypes.INTEGER,
       allowNull: false,
+    },
+    abilities: {
+      type: DataTypes.JSON,
+      allowNull: true,
+    },
+    sprites: {
+      type: DataTypes.JSON, 
+      allowNull: true,
     }, 
+    created: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: true,
+    },
+    stats: {
+      type: DataTypes.JSON,
+      allowNull: true,
+    },
   },
   {timestamps: false}  
   );
-  const Stat = require('./Stats')(sequelize, DataTypes);
-
-  Pokemon.hasMany(Stat);
-  Stat.belongsTo(Pokemon);
-
-  return Pokemon;
 };
 

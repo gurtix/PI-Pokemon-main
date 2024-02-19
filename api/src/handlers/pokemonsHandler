@@ -1,34 +1,75 @@
-const { createPokemonDB } = require("../controllers/pokemonsControllers");
+const { createPokemonDB, getPokemonById, getAllPokemons, getPokemonByName, getTypesByApi, getPokemonWithTypes } = require("../controllers/pokemonsControllers");
 
-const getPokemonsHandler = (req,res) =>{
-    const {name,race}=req.query;
-    if(name)res.status(200).send(`Pokemon ${name}`);
-    res.status(200).send(`Pokemons`);
+const getPokemonsHandler = async (req,res) =>{
+    const {name}=req.query;
+    try {
+        if(name){
+            const pokemonByName = await getPokemonByName(name)
+            res.status(200).send(pokemonByName);
+        }else{
+            const response= await getAllPokemons()
+            res.status(200).send(response);
+        }
+
+
+    } catch (error) {
+        res.status(400).send({error:error.message})        
+    }
 };
 
-const getDetailPokemon = (req, res)=> {
-    const {idPokemon}= req.params
-    res.status(200).send(`Detalle del pokemon ${idPokemon}`);
+const getDetailPokemon = async (req, res) => {
+    const { idPokemon } = req.params;
+    const source = isNaN(idPokemon) ? "bdd" : "api";
+  
+    try {
+      const response = await getPokemonById(idPokemon, source);
+      res.status(200).send(response);
+    } catch (error) {
+      res.status(400).send({ error: error.message });
+    }
+  };
+  
+
+const getTypes = async (req,res)=>{
+    try {
+        const types = await getTypesByApi();
+        res.status(200).send(types);
+    }catch (error) {
+        res.status(400).send({ error: error.message });
+    }
 };
 
-const getTypes = (req,res)=>{
-    res.status(200).send("tipos de pokemons");
-};
+const createPokemonHandler = async(req, res)=>{ 
+    const pokemonData = req.body;
+    try {
+        const newPokemon = await createPokemonDB(pokemonData);
+        // const sprites = await newPokemon.getSprites();
+        // const stats = await newPokemon.getStats();
 
-const createPokemonHandler = async(req, res)=>{  
-    const {name, sprites, stats, height, weight} = req.body;
-    try{
-        const response= await createPokemonDB(name, sprites, stats, height, weight);
-        res.status(200).send(response);
-    }catch (error){
-        res.status(400).send({error:error.message});
+        // newPokemon.sprites = sprites;
+        // newPokemon.stats = stats;
+        res.status(200).send(newPokemon);
+    } catch (error) {
+        res.status(400).send({ error: error.message });
     }
 
 };
+const getPokemonWithTypesHandler = async (req, res) => {
+    try {
+      const pokemonId = req.params.id;
+      const pokemon = await getPokemonWithTypes(pokemonId);
+      res.status(200).send(pokemon);
+    } catch (error) {
+      res.status(400).send({ error: error.message });
+    }
+  };
+
+
 
 module.exports = {
     getPokemonsHandler,
     getDetailPokemon,
     getTypes,
-    createPokemonHandler
+    createPokemonHandler,
+    getPokemonWithTypesHandler,
 };

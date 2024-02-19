@@ -1,18 +1,18 @@
 const { DataTypes } = require('sequelize');
 module.exports = (sequelize) => {
   // defino el modelo
-  sequelize.define('types', {
-    idPokemon:{
-      type: DataTypes.UUID,
-      primaryKey: true,
-      defaultValue: DataTypes.UUIDV4
-    },
+  const Type = sequelize.define('type', {
     name: {
-      type: DataTypes.STRING(12),
+      type: DataTypes.STRING(20),
       allowNull: false,
-      unique:true
+      unique:true,
+    },
+    url: {
+      type: DataTypes.STRING,
+      allowNull: false,
     },
   },
   {timestamps: false}
   );
+  return Type;
 };
