@@ -144,12 +144,12 @@ const getTypesByApi = async () => {
     const typesFromDB = await Type.findAll();
     return typesFromDB;
   };
-  const getPokemonWithTypes = async (idPokemon) => {
-    const pokemon = await Pokemon.findByPk(idPokemon, {
-      include: Type
-    });
+//   const getPokemonWithTypes = async (idPokemon) => {
+//     const pokemon = await Pokemon.findByPk(idPokemon, {
+//       include: Type
+//     });
   
-    return pokemon;
-  };
+//     return pokemon;
+//   };
 
-module.exports={createPokemonDB, getPokemonById, getAllPokemons, getPokemonByName, getTypesByApi,getPokemonWithTypes};
+module.exports={createPokemonDB, getPokemonById, getAllPokemons, getPokemonByName, getTypesByApi};
