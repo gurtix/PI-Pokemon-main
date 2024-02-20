@@ -1,4 +1,4 @@
-const { createPokemonDB, getPokemonById, getAllPokemons, getPokemonByName, getTypesByApi, getPokemonWithTypes } = require("../controllers/pokemonsControllers");
+const { createPokemonDB, getPokemonById, getAllPokemons, getPokemonByName, getTypesByApi } = require("../controllers/pokemonsControllers");
 
 const getPokemonsHandler = async (req,res) =>{
     const {name}=req.query;
@@ -54,15 +54,6 @@ const createPokemonHandler = async(req, res)=>{
     }
 
 };
-const getPokemonWithTypesHandler = async (req, res) => {
-    try {
-      const pokemonId = req.params.id;
-      const pokemon = await getPokemonWithTypes(pokemonId);
-      res.status(200).send(pokemon);
-    } catch (error) {
-      res.status(400).send({ error: error.message });
-    }
-  };
 
 
 
@@ -71,5 +62,4 @@ module.exports = {
     getDetailPokemon,
     getTypes,
     createPokemonHandler,
-    getPokemonWithTypesHandler,
 };

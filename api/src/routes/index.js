@@ -11,6 +11,10 @@ const router = Router();
 
 router.use('/pokemons', pokemonsRoutes);
 router.use('/postsPokemons', postsRoutes);
+router.get('/', function(req, res) {
+  res.send('¡Bienvenido a la API!');
+});
+
 
 
 
