@@ -15,12 +15,14 @@ const createPokemonDB = async (pokemonData) => {
         stats,
         types
     });
-    for (let type of types) {
-        let existingType = await Type.findOne({ where: { name: type.name } });
+    for (let i = 0; i < types.length; i++) {
+        let type = types[i];
+        let existingType = await Type.findOne({ where: { name: type.type.name } });
         if (!existingType) {
             existingType = await Type.create({
-                name: type.name,
-                url: type.url
+                name: type.type.name,
+                url: type.type.url,
+                slot: type.slot
             });
         }
 
@@ -44,14 +46,14 @@ const getPokemonById =async(idPokemon, source) =>{
         });
     }
 
-        const detalleApi= filtrarDatos(pokemon);
+        const detalleApi= filtrarDatos(pokemon,source);
 
     return detalleApi;
     
 };
 
-const filtrarDatos = (pokemon) => {
-    const { id, name, abilities, height, sprites, weight, stats, Types } = pokemon;
+const filtrarDatos = (pokemon,source) => {
+    const { id, name, abilities, height, sprites, weight, stats, Type } = pokemon;
     let spritesFiltrados = {};
     if(sprites) {
         spritesFiltrados = {
@@ -71,14 +73,27 @@ const filtrarDatos = (pokemon) => {
         effort: stat.effort,
         stat: stat.stat
     }));
+    
+    console.log(pokemon.types);
     let typesFiltrados = [];
 
-  if (pokemon.types) {
-    typesFiltrados = pokemon.types.map(t => ({
-      name: t.name,
-      url: t.url
-    })); 
-  }
+    if (source === "api") {
+        typesFiltrados = pokemon.types.map(t => ({
+            slot: t.slot,
+            type: {
+                name: t.type.name,
+                url: t.type.url
+            }
+        })); 
+    } else {
+        typesFiltrados = pokemon.types.map(t => ({
+            slot: t.slot,
+            type: {
+                name: t.name,
+                url: t.url
+            }
+        })); 
+    }
 
     return {
         id,
@@ -99,6 +114,7 @@ const soloNombre = (arr) => {
     return arr.map((pokemon)=>{
     return {
         name:pokemon.name,
+        url: pokemon.url,
         created:false,
     };
 });
@@ -106,7 +122,7 @@ const soloNombre = (arr) => {
 const getAllPokemons = async()=>{
     const pokemonsDB = await Pokemon.findAll()
 
-    const infoApi = (await axios.get(`https://pokeapi.co/api/v2/pokemon`)).data;
+    const infoApi = (await axios.get(`https://pokeapi.co/api/v2/pokemon?offset=0&limit=151`)).data;
 
     const pokemonApi= soloNombre(infoApi.results);
 
@@ -115,7 +131,7 @@ const getAllPokemons = async()=>{
 
 const getPokemonByName = async (name)=>{
 
-    const infoApi = (await axios.get(`https://pokeapi.co/api/v2/pokemon`)).data;
+    const infoApi = (await axios.get(`https://pokeapi.co/api/v2/pokemon?offset=0&limit=151`)).data;
 
     const pokemonApi= soloNombre(infoApi.results);
 
@@ -144,12 +160,4 @@ const getTypesByApi = async () => {
     const typesFromDB = await Type.findAll();
     return typesFromDB;
   };
-//   const getPokemonWithTypes = async (idPokemon) => {
-//     const pokemon = await Pokemon.findByPk(idPokemon, {
-//       include: Type
-//     });
-  
-//     return pokemon;
-//   };
-
 module.exports={createPokemonDB, getPokemonById, getAllPokemons, getPokemonByName, getTypesByApi};
