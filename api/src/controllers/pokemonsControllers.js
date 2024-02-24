@@ -129,19 +129,22 @@ const getAllPokemons = async()=>{
     return [...pokemonsDB,...pokemonApi];
 }
 
-const getPokemonByName = async (name)=>{
-
+const getPokemonByName = async (name) => {
     const infoApi = (await axios.get(`https://pokeapi.co/api/v2/pokemon?offset=0&limit=151`)).data;
+    const pokemonApi = soloNombre(infoApi.results);
+    const lowerCaseName = name.toLowerCase();
+    const pokemonFiltrado = pokemonApi.filter(pokemon => pokemon.name === lowerCaseName);
+    const pokemonDD = await Pokemon.findAll({where: {name: lowerCaseName}});
 
-    const pokemonApi= soloNombre(infoApi.results);
+    const result = [...pokemonFiltrado, ...pokemonDD];
 
-    const pokemonFiltrado= pokemonApi.filter(pokemon=>pokemon.name===name);
+    if (result.length === 0) {
+        console.log('No se encontró el Pokémon con el nombre:', name);
+    }
 
-    const pokemonDD= await Pokemon.findAll({where:{name:name}});
-
-    return [...pokemonFiltrado,...pokemonDD];
-
+    return result;
 }
+
 
 const getTypesByApi = async () => {
     const typesFromAPI = await axios.get('https://pokeapi.co/api/v2/type');
