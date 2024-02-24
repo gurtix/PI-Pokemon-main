@@ -12,9 +12,10 @@ function HomePage() {
     const [search, setSearch] = useState('');
     const [offset, setOffset] = useState(0);
     const history = useHistory();
+    const [isScrolled, setIsScrolled] = useState(false);
 
     useEffect(() => {
-        fetch(`${API_URL}?offset=0&limit=100`).then((response) => response.json()).then((data) => {
+        fetch(`${API_URL}?offset=0&limit=151`).then((response) => response.json()).then((data) => {
           Promise.all(data.map(pokemon => fetch(pokemon.url).then(res => res.json())))
             .then(pokemonDetails => {
               setAllPokemons(pokemonDetails);
@@ -27,9 +28,24 @@ function HomePage() {
         const filteredPokemons = allPokemons.filter(pokemon => pokemon.name.toLowerCase().includes(search.toLowerCase()));
         setDisplayedPokemons(filteredPokemons.slice(offset, offset + 20));
     }, [search, offset, allPokemons]);
+
+    useEffect(() => {
+        const checkScroll = () => {
+          if (window.scrollY > 30) {
+            setIsScrolled(true);
+          } else {
+            setIsScrolled(false);
+          }
+        };
     
-      
-      
+        window.addEventListener('scroll', checkScroll);
+    
+        return () => {
+          window.removeEventListener('scroll', checkScroll);
+        };
+      }, []);
+
+        
 
       const loadMorePokemons = () => {
         const newOffset = offset + 20;
@@ -58,7 +74,7 @@ function HomePage() {
 
   return (
     <div className='background'style={{ backgroundImage: `url(${backgroundImage})` }}>
-      <header className='header'>
+      <header className={`header ${isScrolled ? 'hidden' : ''}`}>
         <nav>
         <button onClick={() => history.push('/post')}>Crear Pokemon</button>
         </nav>
@@ -68,7 +84,7 @@ function HomePage() {
       </header>
       <div className='previous'>
         {offset > 0 && <button onClick={goToStart}>Ir al inicio</button>}
-        {offset > 0 && <button onClick={loadPreviousPokemons}>Cargar anteriores</button>}
+        {offset > 0 && <button onClick={loadPreviousPokemons}>Ver anteriores</button>}
       </div>      
       <ul className='pokemonlist'>
         {filteredPokemons.map((pokemonDetail) => (
@@ -83,8 +99,8 @@ function HomePage() {
         ))}
       </ul>
       <div className="next">        
-      {offset + 50< allPokemons.length && <button onClick={loadMorePokemons}>Cargar más</button>}
-      {offset + 50 < allPokemons.length && <button onClick={goToEnd}>Ir al final</button>}
+      {offset +20< allPokemons.length && <button onClick={loadMorePokemons}>Ver más</button>}
+      {offset +20< allPokemons.length && <button onClick={goToEnd}>Ir al final</button>}
       </div>
     </div>
   );
