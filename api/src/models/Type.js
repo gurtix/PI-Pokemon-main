@@ -11,10 +11,10 @@ module.exports = (sequelize) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      slot: { // Nueva columna para el slot
-        type: DataTypes.INTEGER,
-        allowNull: false,
-      },
+      // slot: { // Nueva columna para el slot
+      //   type: DataTypes.INTEGER,
+      //   allowNull: false,
+      // },
   },
   {timestamps: false}
   );

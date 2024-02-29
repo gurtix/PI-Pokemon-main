@@ -15,7 +15,7 @@ function HomePage() {
     const [isScrolled, setIsScrolled] = useState(false);
 
     useEffect(() => {
-        fetch(`${API_URL}?offset=0&limit=151`).then((response) => response.json()).then((data) => {
+        fetch(`${API_URL}`).then((response) => response.json()).then((data) => {
           Promise.all(data.map(pokemon => fetch(pokemon.url).then(res => res.json())))
             .then(pokemonDetails => {
               setAllPokemons(pokemonDetails);
@@ -71,7 +71,8 @@ function HomePage() {
     };
 
     const filteredPokemons = displayedPokemons.filter(pokemon => pokemon.name.toLowerCase().includes(search.toLowerCase()));
-
+    
+    
   return (
     <div className='background'style={{ backgroundImage: `url(${backgroundImage})` }}>
       <header className={`header ${isScrolled ? 'hidden' : ''}`}>
@@ -87,16 +88,19 @@ function HomePage() {
         {offset > 0 && <button onClick={loadPreviousPokemons}>Ver anteriores</button>}
       </div>      
       <ul className='pokemonlist'>
-        {filteredPokemons.map((pokemonDetail) => (
-          <li key={pokemonDetail.name}>
-          <Link to={`/DetailPage/${pokemonDetail.id}`}>
-            <img src={pokemonDetail.sprites.front_default} alt={pokemonDetail.name}/>
-            <h2>
-                {pokemonDetail.name} 
-            </h2>
-          </Link>
-        </li>
-        ))}
+        {filteredPokemons.map((pokemonDetail) => {
+          console.log(pokemonDetail);
+          return (
+            <li key={pokemonDetail.name}>
+              <Link to={`/DetailPage/${pokemonDetail.created ? (pokemonDetail.idPokemon || 'unknown') : (pokemonDetail.id || 'unknown')}`}>
+                <img src={pokemonDetail.sprites.front_default} alt={pokemonDetail.name}/>
+                <h2>
+                    {pokemonDetail.name} 
+                </h2>
+              </Link>
+            </li>
+          );
+        })}
       </ul>
       <div className="next">        
       {offset +20< allPokemons.length && <button onClick={loadMorePokemons}>Ver más</button>}

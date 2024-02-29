@@ -1,0 +1,30 @@
+* {
+    font-family: sans-serif;
+}
+
+
+
+.backcp {
+    background-image: radial-gradient(circle, #5e4df7 7%, #3f1f9e 78%);
+    height: 150vh;
+}
+
+.list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding-top: 150px;
+    box-sizing: border-box;
+    border-radius: 10px;
+}
+
+.list div{    
+    padding-top: 10px;
+}
+.stats{    
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+}

@@ -1,6 +1,6 @@
 @media screen and (max-width: 600px) {
 
- }
+}
 
 *{
     margin: 0;
@@ -55,10 +55,10 @@
     backdrop-filter: blur(10px);
     border-radius: 50px;
     box-shadow: 0px 0px 20px #302e2e;
-    transition: transform 0.3s ease; 
+    transition: transform 0.3s ease;
   }
   .pokemonlist li:hover{
-  transform: scaley(1.2);
+    transform: skewY(5deg) scaleY(1.2);
   }
   
   
