@@ -1,3 +1,17 @@
+@keyframes create {
+    0% {
+        color: #00ff0d;
+    }
+
+    50% {
+        color:#fbff00;
+    }
+
+    100% {
+        color: #00eeff;
+    }
+}
+
 * {
     font-family: sans-serif;
 }
@@ -15,16 +29,64 @@
     align-items: center;
     justify-content: center;
     width: 100%;
-    padding-top: 150px;
+    padding-top: 70px;
     box-sizing: border-box;
     border-radius: 10px;
 }
 
-.list div{    
-    padding-top: 10px;
+.list input{
+    height: 30px;
 }
 .stats{    
-    display: flex;
+    display: grid;
     flex-direction: column;
     flex-wrap: wrap;
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.checkbox{    
+  display: grid;
+  padding: 30px 0px 0px 0px;
+  grid-template-columns: repeat(6, 1fr);
+}
+
+.checkbox input{
+    width: 20px;
+}
+
+.checkbox input:hover{
+}
+
+.mensajeError {
+    color: rgb(255, 132, 132);
+    font-size: 25px;
+}
+.error-message {
+    color: rgb(255, 115, 115);
+}
+h5{
+    padding: 100px 0px 0px 0px;
+    font-size: 25px;
+    color: #92ff97;
+}
+
+.list input:hover{
+    background-color: rgb(193, 210, 255)
+}
+
+.altura input, .habilidades input, .stats input, .nombre input, .peso input, .apariencia input{
+    width: 200px;
+    transition: width 0.4s ease-in-out;
+}
+
+.altura input:focus, .habilidades input:focus, .stats input:focus, .nombre input:focus, .peso input:focus, .apariencia input:focus{
+    width: 210px;
+}
+
+.guardar {
+    margin-bottom: 20px;
+}
+.mensajeCreado{
+    animation: create 2s infinite;
+    font-size: 3rem;
 }
