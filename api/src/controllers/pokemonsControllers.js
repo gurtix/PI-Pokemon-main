@@ -98,7 +98,6 @@ const filtrarDatos = (pokemon, source) => {
         };
     };
 
-    console.log(pokemon.types);
     let typesFiltrados = [];
 
     if (Array.isArray(pokemon.types)) {
