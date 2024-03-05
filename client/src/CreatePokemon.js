@@ -114,13 +114,14 @@ function CreatePokemon() {
     return (
         <div className="backcp">
             <header className='encabezado'>
-                <Link to="/home" className="boton">
-                    <img src={backIcon} alt="Back" />INICIO</Link>
+            <Link to="/home" className="boton" onClick={() => console.log('Botón clickeado')}>
+  <img src={backIcon} alt="Back" />INICIO
+</Link>
             </header>
 
             <div className='list'>
                 <form onSubmit={handleSubmit}>
-                    <div className='nombre'><h5>ingresa un nombre por favor</h5>
+                    <div className='nombre'><h5>Ingresa un nombre por favor</h5>
                         <input type="text" placeholder="Nombre" value={name} onChange={(e) => setName(e.target.value)} />
                         {nameError && <p className="error-message">{nameError}</p>}
                     </div>
@@ -164,22 +165,22 @@ function CreatePokemon() {
 
                         {availableTypes.map((type) => (
                             <div key={type.id}>
-                                <input type="checkbox" id={type.name} value={type.name} onChange={(e) => {
+                                <input className='botoncheck' type="checkbox" id={type.name} value={type.name} onChange={(e) => {
                                     if (e.target.checked) {
                                         setTypes([...types, { name: e.target.value, url: type.url }]);
                                     } else {
                                         setTypes(types.filter((t) => t.name !== e.target.value));
                                     }
                                 }} />
-                                <label htmlFor={type.name}>{type.name}</label>
+                                <label className="lbl-switch" htmlFor={type.name}>{type.name}</label>
                             </div>
                         ))}
                     </div>
-                    <div className='apariencia'><h5>agregue un link de la imagen del pokemon</h5>
+                    <div className='apariencia'><h5>Agregue el link de la imagen del pokemon</h5>
                         <input type="text" placeholder="Sprite Front Default" value={sprites.front_default} onChange={(e) => setSprites({ front_default: e.target.value })} />
                         {spritesError && <p className="error-message">{spritesError}</p>}
                     </div>
-                    <button className='guardar' type="submit">Guardar Pokémon</button>
+                    <button className='guardar' type="submit">Crear Pokémon</button>
                 </form>
                 {successMessage && <p className='mensajeCreado'>{successMessage}</p>}
                 {errorMessage && <p className='mensajeError'>{errorMessage}</p>}
