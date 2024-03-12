@@ -30,6 +30,10 @@ function CreatePokemon() {
     const [ability1Error, setAbility1Error] = useState('');
     const [ability2Error, setAbility2Error] = useState('');
     const [spritesError, setSpritesError] = useState('');
+    const [statsError, setStatsError] = useState('');
+    const [typesError, setTypesError] = useState('');
+
+    
 
 
     useEffect(() => {
@@ -49,33 +53,52 @@ function CreatePokemon() {
     const handleSubmit = async (event) => {
         event.preventDefault();
 
+        
+    setErrorMessage('');
+    setNameError('');
+    setHeightError('');
+    setWeightError('');
+    setAbility1Error('');
+    setAbility2Error('');
+    setSpritesError('');
+    
+        const emptyStats = stats.filter(stat => stat.base_stat === '');
+
+        if (emptyStats.length > 0) {
+            setStatsError('Valor necesario en las estadísticas');
+            return;
+        }
         if (!name) {
             setNameError('Falta el nombre');
             return;
-        }setErrorMessage('');
+        }
         if (!height) {
             setHeightError('Falta la altura');
             return;
-        }setErrorMessage('');
+        }
         if (!weight) {
             setWeightError('Falta el peso');
             return;
-        }setErrorMessage('');
+        }
     
         if (!abilities[0].ability.name) {
             setAbility1Error('Falta la habilidad 1');
             return;
-        }setErrorMessage('');
+        }
     
         if (!abilities[1].ability.name) {
             setAbility2Error('Falta la habilidad 2');
             return;
-        }setErrorMessage('');
+        }
     
         if (!sprites.front_default) {
             setSpritesError('Falta el sprite');
             return;
-        }setErrorMessage('');
+        }
+        if (types.length < 2) {
+            setTypesError('Debe seleccionar al menos 2 tipos');
+            return;
+        }
 
         const pokemonData = {
             name,
@@ -126,11 +149,11 @@ function CreatePokemon() {
                         {nameError && <p className="error-message">{nameError}</p>}
                     </div>
                     <div className='altura'>
-                        <input type="text" placeholder="Altura" value={height} onChange={(e) => setHeight(e.target.value)} />
+                        <input type="number" placeholder="Altura" value={height} onChange={(e) => setHeight(e.target.value)} />
                         {heightError && <p className="error-message">{heightError}</p>}
                     </div>
                     <div className='peso'>
-                        <input type="text" placeholder="Peso" value={weight} onChange={(e) => setWeight(e.target.value)} />
+                        <input type="number" placeholder="Peso" value={weight} onChange={(e) => setWeight(e.target.value)} />
                         {weightError && <p className="error-message">{weightError}</p>}
                     </div>
                     <h5>Habilidades del pokemon</h5>
@@ -152,11 +175,12 @@ function CreatePokemon() {
                     <div className='stats'>
                         {stats.map((stat, index) => (
                             <div key={index}>
-                                <input key={index} type="text" placeholder={stat.name} value={stat.base_stat} onChange={(e) => {
+                                <input key={index} type="number" placeholder={stat.name} value={stat.base_stat} onChange={(e) => {
                                     const newStats = [...stats];
                                     newStats[index].base_stat = e.target.value;
                                     setStats(newStats);
-                                }} />
+                                }} max="100" />
+                                {statsError && <p className="error-message">{statsError}</p>}
                             </div>
                         ))}
                     </div>
@@ -175,6 +199,7 @@ function CreatePokemon() {
                                 <label className="lbl-switch" htmlFor={type.name}>{type.name}</label>
                             </div>
                         ))}
+                        {typesError && <p className="error-message">{typesError}</p>}
                     </div>
                     <div className='apariencia'><h5>Agregue el link de la imagen del pokemon</h5>
                         <input type="text" placeholder="Sprite Front Default" value={sprites.front_default} onChange={(e) => setSprites({ front_default: e.target.value })} />
