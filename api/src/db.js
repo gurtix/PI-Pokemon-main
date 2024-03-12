@@ -48,9 +48,6 @@ sequelize.models = Object.fromEntries(capsEntries);
 const { Pokemon, Type, Detail} = sequelize.models;
 
 // Aca vendrian las relaciones
-// Product.hasMany(Reviews);
-// Pokemon.hasMany(Type);
-// Type.hasMany(Pokemon);
 Pokemon.belongsToMany(Type, { through: 'PokemonTypes' });
 Type.belongsToMany(Pokemon, { through: 'PokemonTypes' });
 Detail.belongsToMany(Type, { through: 'DetailTypes' });
