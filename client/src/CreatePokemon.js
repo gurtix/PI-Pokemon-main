@@ -52,30 +52,30 @@ function CreatePokemon() {
         if (!name) {
             setNameError('Falta el nombre');
             return;
-        }
+        }setErrorMessage('');
         if (!height) {
             setHeightError('Falta la altura');
             return;
-        }
+        }setErrorMessage('');
         if (!weight) {
             setWeightError('Falta el peso');
             return;
-        }
+        }setErrorMessage('');
     
         if (!abilities[0].ability.name) {
             setAbility1Error('Falta la habilidad 1');
             return;
-        }
+        }setErrorMessage('');
     
         if (!abilities[1].ability.name) {
             setAbility2Error('Falta la habilidad 2');
             return;
-        }
+        }setErrorMessage('');
     
         if (!sprites.front_default) {
             setSpritesError('Falta el sprite');
             return;
-        }
+        }setErrorMessage('');
 
         const pokemonData = {
             name,
